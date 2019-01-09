@@ -13,9 +13,13 @@ const bot = new TelegramBot(token, {
   polling: true
 });
 
+// Ponemos la primera letra en mayuscula
+
 capitalizeFirstLetter = string => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+// Controlamos si tiene precipitaciones
 
 controlRainfall = string => {
   if (!string) {
@@ -23,6 +27,8 @@ controlRainfall = string => {
   }
   return string;
 };
+
+// Controlamos los emojis dependiendo del dia que hace
 
 emojisForDays = string => {
   if (string === "Muy soleado" || string === "Soleado") {
@@ -52,9 +58,11 @@ emojisForDays = string => {
   }
 };
 
+// Cuando el bot recibe el parametro /start manda un saludo
+
 bot.onText(/^\/start/, function (msg) {
-  var chatId = msg.chat.id;
-  var username = msg.from.username;
+  const chatId = msg.chat.id;
+  const username = msg.from.username;
 
   bot.sendMessage(
     chatId,
@@ -65,6 +73,8 @@ bot.onText(/^\/start/, function (msg) {
     "Escribe /clima nombredelacity para informarte del tiempo"
   );
 });
+
+// Cuando el bot recibe la palabra hola bot, devolvemos un saludo
 
 bot.on("message", function (msg) {
   const sayHello = "hola bot";
@@ -82,6 +92,8 @@ bot.on("message", function (msg) {
     bot.sendMessage(msg.chat.id, "Hola " + firstnameuser + ", como estás?");
   }
 });
+
+// Cuando el bot recibe el parametro /clima ciudad devolvemos toda la informacion
 
 bot.onText(/^\/clima (.+)/, function (msg, match) {
   const chatId = msg.chat.id;
@@ -157,34 +169,6 @@ bot.onText(/^\/clima (.+)/, function (msg, match) {
 
       call(days);
 
-
-      // VERSION ANTERIOR
-
-      // result[0].forecast.map((element, index) => {
-      //   if (index >= 2) {
-      //     return bot.sendMessage(
-      //       chatId,
-      //       this.capitalizeFirstLetter(element.day) +
-      //         " " +
-      //         this.emojisForDays(element.skytextday) +
-      //         "\n\n" +
-      //         "Temperatura minima: " +
-      //         element.low +
-      //         "\n" +
-      //         "Temperatura maxima: " +
-      //         element.high +
-      //         "\n" +
-      //         "Precipitaciones: " +
-      //         this.controlRainfall(element.precip) +
-      //         "%\n" +
-      //         "Estado del cielo: " +
-      //         element.skytextday,
-      //       {
-      //         parse_mode: "Markdown"
-      //       }
-      //     );
-      //   }
-      // });
     }
   });
 });
